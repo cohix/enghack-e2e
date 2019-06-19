@@ -1,5 +1,5 @@
 cli:
 	go build -o enghack ./client
 
-server:
+srv:
 	go build -o enghack-server ./server

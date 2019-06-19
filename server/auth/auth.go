@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/cohix/simplcrypto"
-	"github.com/enghack-e2e/server/secret"
+	"github.com/cohix/enghack-e2e/server/secret"
 )
 
 var enableAuth = true

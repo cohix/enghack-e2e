@@ -21,7 +21,7 @@ func SetMessage(message *simplcrypto.Message) error {
 		return errors.Wrap(err, "failed to Marshal message")
 	}
 
-	req, err := http.NewRequest(http.MethodPost, "http://localhost/api/v1/message", bytes.NewBuffer(messageJSON))
+	req, err := http.NewRequest(http.MethodPost, "http://localhost:8080/api/v1/message", bytes.NewBuffer(messageJSON))
 	if err != nil {
 		return errors.Wrap(err, "failed to NewRequest")
 	}
@@ -47,7 +47,7 @@ func SetMessage(message *simplcrypto.Message) error {
 
 // GetMessage fetches the message from the server
 func GetMessage() (*simplcrypto.Message, error) {
-	req, err := http.NewRequest(http.MethodGet, "http://localhost/api/v1/message", nil)
+	req, err := http.NewRequest(http.MethodGet, "http://localhost:8080/api/v1/message", nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to NewRequest")
 	}
@@ -85,9 +85,9 @@ func GetMessage() (*simplcrypto.Message, error) {
 const hmacData = "EngHack2019!"
 
 func getHMACdToken() (string, error) {
-	token := os.Getenv("enghack_token")
+	token := os.Getenv("ENGHACKAUTHKEY")
 	if token == "" {
-		return "", errors.New("missing enghack_token environment variable")
+		return "", errors.New("missing ENGHACKAUTHKEY environment variable")
 	}
 
 	hmac := simplcrypto.HMACWithSecretAndData(token, hmacData)

@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/enghack-e2e/server/auth"
+	"github.com/cohix/enghack-e2e/server/auth"
 )
 
 func main() {
