@@ -9,9 +9,7 @@ import (
 )
 
 var enableAuth = true
-
-// Key defines the key used for auth
-var Key string
+var key string
 
 // Verify verifies the authentication hmac
 func Verify(h http.HandlerFunc) http.HandlerFunc {
@@ -19,7 +17,7 @@ func Verify(h http.HandlerFunc) http.HandlerFunc {
 
 		if enableAuth {
 			hmacHeader := r.Header.Get("AUTHORIZATION")
-			hmac := simplcrypto.Base64URLEncode(simplcrypto.HMACWithSecretAndData(Key, "EngHack2019!"))
+			hmac := simplcrypto.Base64URLEncode(simplcrypto.HMACWithSecretAndData(key, "EngHack2019!"))
 
 			if hmacHeader != hmac {
 				fmt.Printf("unauthorized\n")
@@ -33,6 +31,6 @@ func Verify(h http.HandlerFunc) http.HandlerFunc {
 }
 
 func init() {
-	Key = secret.Generate()
-	fmt.Println("export ENGHACKAUTHKEY=" + Key)
+	key = secret.Generate()
+	fmt.Println("export ENGHACKAUTHKEY=" + key)
 }
