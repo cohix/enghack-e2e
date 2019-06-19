@@ -1,3 +1,5 @@
+all: cli srv
+
 cli:
 	go build -o enghack ./client
 
