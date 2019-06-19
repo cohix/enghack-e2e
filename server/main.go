@@ -4,11 +4,16 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/enghack-e2e/server/util"
 )
 
 func main() {
 	http.HandleFunc("/ping", handlePing)
 	http.HandleFunc("/api/v1/message", handleMessageRequest)
+
+	secret := util.GenSecret()
+	fmt.Println("export ENGHACKKEY=" + secret)
 
 	fmt.Println("Running server on port 8080")
 	http.ListenAndServe(":8080", nil)
