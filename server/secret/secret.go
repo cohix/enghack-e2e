@@ -1,4 +1,4 @@
-package util
+package secret
 
 import (
 	cryptorand "crypto/rand"
@@ -6,8 +6,8 @@ import (
 	"github.com/cohix/simplcrypto"
 )
 
-// GenSecret generates a random 32 character secret
-func GenSecret() string {
+// Generate generates a random 32 character secret
+func Generate() string {
 	b := make([]byte, 32)
 	if _, err := cryptorand.Read(b); err != nil {
 		panic(err)

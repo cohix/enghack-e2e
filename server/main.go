@@ -6,13 +6,12 @@ import (
 	"net/http"
 
 	"github.com/cohix/simplcrypto"
-
-	"github.com/enghack-e2e/server/util"
+	"github.com/enghack-e2e/server/secret"
 )
 
 var enableAuth = true
 
-var secret string
+var authKey string
 
 func main() {
 	http.HandleFunc("/ping", handlePing)
@@ -23,8 +22,8 @@ func main() {
 }
 
 func init() {
-	secret = util.GenSecret()
-	fmt.Println("export ENGHACKKEY=" + secret)
+	authKey = secret.Generate()
+	fmt.Println("export ENGHACKAUTHKEY=" + authKey)
 }
 
 func handleMessageRequest(w http.ResponseWriter, r *http.Request) {
@@ -79,7 +78,7 @@ func auth(h http.HandlerFunc) http.HandlerFunc {
 
 		if enableAuth {
 			hmacHeader := r.Header.Get("AUTHORIZATION")
-			hmac := simplcrypto.Base64URLEncode(simplcrypto.HMACWithSecretAndData(secret, "EngHack2019!"))
+			hmac := simplcrypto.Base64URLEncode(simplcrypto.HMACWithSecretAndData(authKey, "EngHack2019!"))
 
 			if hmacHeader != hmac {
 				fmt.Printf("auth failed\n")
