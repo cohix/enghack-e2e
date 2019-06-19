@@ -35,7 +35,7 @@ func handleGetMessageRequest(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("Data sent!")
 
-	w.Write([]byte(message))
+	w.Write(message)
 }
 
 func handlePostMessageRequest(w http.ResponseWriter, r *http.Request) {
