@@ -9,7 +9,6 @@ import (
 func main() {
 	http.HandleFunc("/ping", handlePing)
 	http.HandleFunc("/api/v1/message", handleMessageRequest)
-	http.HandleFunc("/", handlePing)
 
 	fmt.Println("Running server on port 8080")
 	http.ListenAndServe(":8080", nil)
