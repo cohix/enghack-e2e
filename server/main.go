@@ -5,18 +5,26 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/cohix/simplcrypto"
+
 	"github.com/enghack-e2e/server/util"
 )
 
+var enableAuth = true
+
+var secret string
+
 func main() {
 	http.HandleFunc("/ping", handlePing)
-	http.HandleFunc("/api/v1/message", handleMessageRequest)
-
-	secret := util.GenSecret()
-	fmt.Println("export ENGHACKKEY=" + secret)
+	http.HandleFunc("/api/v1/message", auth(handleMessageRequest))
 
 	fmt.Println("Running server on port 8080")
 	http.ListenAndServe(":8080", nil)
+}
+
+func init() {
+	secret = util.GenSecret()
+	fmt.Println("export ENGHACKKEY=" + secret)
 }
 
 func handleMessageRequest(w http.ResponseWriter, r *http.Request) {
@@ -64,4 +72,22 @@ func handlePostMessageRequest(w http.ResponseWriter, r *http.Request) {
 
 func handlePing(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "pong")
+}
+
+func auth(h http.HandlerFunc) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		if enableAuth {
+			hmacHeader := r.Header.Get("AUTHORIZATION")
+			hmac := simplcrypto.Base64URLEncode(simplcrypto.HMACWithSecretAndData(secret, "EngHack2019!"))
+
+			if hmacHeader != hmac {
+				fmt.Printf("auth failed\n")
+				w.WriteHeader(http.StatusUnauthorized)
+				return
+			}
+		}
+
+		h.ServeHTTP(w, r)
+	})
 }

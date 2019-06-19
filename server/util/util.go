@@ -2,8 +2,8 @@ package util
 
 import (
 	cryptorand "crypto/rand"
-	"encoding/base64"
-	"strings"
+
+	"github.com/cohix/simplcrypto"
 )
 
 // GenSecret generates a random 32 character secret
@@ -13,5 +13,6 @@ func GenSecret() string {
 		panic(err)
 	}
 
-	return strings.TrimRight(base64.URLEncoding.EncodeToString(b), "=")
+	return simplcrypto.Base64URLEncode(b)
+	//return strings.TrimRight(base64.URLEncoding.EncodeToString(b), "=")
 }
