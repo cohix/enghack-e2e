@@ -1,7 +1,9 @@
 all: cli srv
 
 cli:
-	go build -o enghack ./client
+	mkdir -p bin
+	go build -o bin/enghack ./client
 
 srv:
-	go build -o enghack-server ./server
+	mkdir -p bin
+	go build -o bin/enghack-server ./server

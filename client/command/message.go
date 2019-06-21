@@ -52,7 +52,7 @@ func getMessageCmd() *cobra.Command {
 
 			encMessage, err := action.GetMessage()
 			if err != nil {
-				log.Fatal(errors.Wrap(err, "failed to SetMessage"))
+				log.Fatal(errors.Wrap(err, "failed to GetMessage"))
 			}
 
 			message, err := key.Decrypt(encMessage)
