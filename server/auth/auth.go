@@ -4,26 +4,26 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/cohix/simplcrypto"
 	"github.com/cohix/enghack-e2e/server/secret"
+	"github.com/cohix/simplcrypto"
 )
 
-var enableAuth = true
-var key string
+var token string
+var hmacData = "EngHack2019!"
 
 // Verify verifies the authentication hmac
 func Verify(h http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		if enableAuth {
-			hmacHeader := r.Header.Get("AUTHORIZATION")
-			hmac := simplcrypto.Base64URLEncode(simplcrypto.HMACWithSecretAndData(key, "EngHack2019!"))
+		hmacHeader := r.Header.Get("AUTHORIZATION")
 
-			if hmacHeader != hmac {
-				fmt.Printf("unauthorized\n")
-				w.WriteHeader(http.StatusUnauthorized)
-				return
-			}
+		hmac := simplcrypto.HMACWithSecretAndData(token, hmacData)
+		hmacString := simplcrypto.Base64URLEncode(hmac)
+
+		if hmacHeader != hmacString {
+			fmt.Printf("unauthorized\n")
+			w.WriteHeader(http.StatusUnauthorized)
+			return
 		}
 
 		h.ServeHTTP(w, r)
@@ -31,6 +31,6 @@ func Verify(h http.HandlerFunc) http.HandlerFunc {
 }
 
 func init() {
-	key = secret.Generate()
-	fmt.Println("export ENGHACKAUTHKEY=" + key)
+	token = secret.Generate()
+	fmt.Println("export ENGHACKAUTHTOKEN=" + token)
 }

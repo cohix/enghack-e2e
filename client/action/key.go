@@ -21,7 +21,11 @@ func GetOrCreateKey() (*simplcrypto.SymKey, error) {
 	var key *simplcrypto.SymKey
 
 	key, err := keyFromFile(keypath)
-	if err == nil {
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get keyFromFile")
+	}
+
+	if key != nil {
 		return key, nil
 	}
 

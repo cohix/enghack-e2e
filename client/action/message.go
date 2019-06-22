@@ -85,9 +85,9 @@ func GetMessage() (*simplcrypto.Message, error) {
 const hmacData = "EngHack2019!"
 
 func getHMACdToken() (string, error) {
-	token := os.Getenv("ENGHACKAUTHKEY")
+	token := os.Getenv("ENGHACKAUTHTOKEN")
 	if token == "" {
-		return "", errors.New("missing ENGHACKAUTHKEY environment variable")
+		return "", errors.New("missing ENGHACKAUTHTOKEN environment variable")
 	}
 
 	hmac := simplcrypto.HMACWithSecretAndData(token, hmacData)
